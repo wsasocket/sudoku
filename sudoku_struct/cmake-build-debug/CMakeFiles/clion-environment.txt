@@ -1,0 +1,1 @@
+CMake: 3.6.3@/home/james/Programe Files/clion/bin/cmake/bin/cmake
