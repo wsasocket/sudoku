@@ -1,5 +1,5 @@
 from sudoku import Sudoku
-from time import clock
+from timer import Timer
 
 def solve_sudoku(_sudoku):
     # 用于控制空点序列的游标
@@ -37,9 +37,8 @@ if __name__ == '__main__':
     sudoku.pre_calculate()
     sudoku.print_sudoku()
 
-    start = clock()
-    cursor = 0
-    solve_sudoku(sudoku)
-    finish = clock()
+    with Timer(True) as t:
+        cursor = 0
+        solve_sudoku(sudoku)
     sudoku.print_sudoku()
-    print("{:<20}:{:<10.6} s".format(solve_sudoku.__name__, finish-start))
+
