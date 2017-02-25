@@ -65,6 +65,7 @@ class Sudoku(object):
         return set(tmp)
 
     def pre_calculate(self):
+        l = [i for i in range(1, 10)]
         for index in range(0, 81):
             if self.get_value(index) != 0:
                 continue
@@ -73,8 +74,11 @@ class Sudoku(object):
             set_col = self.get_col_values(col)
             set_id = self.get_cell_values(ids)
             sets = set_row | set_col | set_id
-            l = [i for i in range(1, 10)]
             av_set = set(l) - sets
+            # 判断语句很重要，能大幅度减少运行时间
+            if len(av_set) == 1:
+                self._list[index].value = [v for v in av_set][0]
+                continue
             self.set_av(index, av_set)
             self._to_be_filled.append(self._list[index])
         return self._to_be_filled
@@ -82,17 +86,23 @@ class Sudoku(object):
     def is_validate(self, index, value):
 
         row, col, ids = self.get_row_col_id(index)
-        set_row = self.get_row_values(row)
-        if value in set_row:
-            return False
-        set_col = self.get_col_values(col)
-        if value in set_col:
-            return False
-        set_id = self.get_cell_values(ids)
-        if value in set_id:
-            return False
-        sets = set_row | set_col | set_id
-
-        if value not in sets:
-            return True
-        return False
+        # 集合算法理论上不错，但是效率很低
+        # set_row = self.get_row_values(row)
+        # if value in set_row:
+        #     return False
+        # set_col = self.get_col_values(col)
+        # if value in set_col:
+        #     return False
+        # set_id = self.get_cell_values(ids)
+        # if value in set_id:
+        #     return False
+        # sets = set_row | set_col | set_id
+        # if value not in sets:
+        #     return True
+        # return False
+        # 遍历一下效率比集合运算高
+        for p in self._list:
+            if p.col == col or p.row == row or p.id == ids:
+                if p.value == value:
+                    return False
+        return True
