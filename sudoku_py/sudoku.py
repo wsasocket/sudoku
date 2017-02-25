@@ -77,7 +77,7 @@ class Sudoku(object):
             av_set = set(l) - sets
             # 判断语句很重要，能大幅度减少运行时间
             if len(av_set) == 1:
-                self._list[index].value = [v for v in av_set][0]
+                self._list[index].value = list(av_set)[0]
                 continue
             self.set_av(index, av_set)
             self._to_be_filled.append(self._list[index])
