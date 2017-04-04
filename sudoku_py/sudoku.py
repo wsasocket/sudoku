@@ -18,16 +18,33 @@ class Sudoku(object):
     def points(self):
         return self._to_be_filled
 
-    def load_data(self, path='/home/james/sudoku.txt'):
+    def load_data_from_file(self, _path='/home/james/sudoku.txt'):
         index = 0
-        with open(path, 'r') as f:
+        with open(_path, 'r') as f:
             for row in range(0, 9):
                 line = f.readline()
                 for v in line[0:9]:
                     self._list[index].value = int(v)
                     index += 1
 
-    def print_sudoku(self):
+    def load_data_from_argv(self, _data=''):
+        if len(_data) != 81:
+            return
+        index = 0
+        v = [x for x in range(0, 10)]
+        for i in _data:
+            if int(i) not in v:
+                return
+        for i in _data:
+            self._list[index].value = int(i)
+            index += 1
+
+    def print_sudoku(self, stdout=False):
+        if stdout:
+            for p in self._list:
+                print(p.value, end='')
+            print('')
+            return
         print(' -------------------------------------')
         index = 0
         for p in self._list:
@@ -106,3 +123,6 @@ class Sudoku(object):
                 if p.value == value:
                     return False
         return True
+
+    def get_list_value(self):
+        return [x.value for x in self._list]
